@@ -5,25 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace N_Tris
 {
     class Polyomino
     {
-        private Brush color;
-        public Brush Color 
-        { 
-            get
-            {
-                if ( color == null )
-                {
-                    color = PolyominoColorChooser.assignColor( this );
-                }
-                return color;
-            }
-            set { color = value; }
-        }
+        public byte colorR;
+        public byte colorG;
+        public byte colorB;
 
         private bool evenWidth = false;
         private bool evenHeight = false;
@@ -68,6 +59,13 @@ namespace N_Tris
                 Minos.Add(new Vector2(v.X, v.Y));
             }
             Minos.Add(adj);
+        }
+
+        public Polyomino(Polyomino polyomino) : this(polyomino.Minos)
+        {
+            this.colorR = polyomino.colorR;
+            this.colorG = polyomino.colorG;
+            this.colorB = polyomino.colorB;
         }
 
         public override int GetHashCode()
@@ -270,7 +268,7 @@ namespace N_Tris
 
         public Polyomino Clone()
         {
-            return new Polyomino(Minos);
+            return new Polyomino(this);
         }
 
         public void print()
@@ -280,6 +278,69 @@ namespace N_Tris
                 Console.Write("(" + p.X + ", " + p.Y + "), ");
             }
             Console.WriteLine(Minos.GetHashCode());
+        }
+
+        public void drawPolyomino(Canvas canvas, Vector2 location, double minoSize, bool ghost)
+        {
+            foreach (Vector2 v in Minos)
+            {
+                Mino m = new Mino(v + location, this);
+                m.drawMino(canvas, minoSize, ghost);
+            }
+
+            return;
+        }
+
+        public void drawPolyomino( Canvas canvas, double minoSize, double locx, double locy, bool ghost )
+        {
+            foreach (Vector2 v in Minos)
+            {
+                double x = v.X * minoSize + locx;
+                double y = -v.Y * minoSize + locy;
+
+                // todo slow garbage making
+                Mino m = new Mino(new Vector2(int.MaxValue, int.MaxValue ), this) ;
+                m.drawMino(canvas, minoSize, x, y, ghost);
+            }
+
+        }
+
+        public void drawPolyomino(Canvas canvas, Rect r, bool ghost)
+        {
+            int minx = int.MaxValue;
+            int miny = int.MaxValue;
+            int maxx = int.MinValue;
+            int maxy = int.MinValue;
+
+            foreach (Vector2 v in Minos)
+            {
+                minx = Math.Min(minx, v.X);
+                maxx = Math.Max(maxx, v.X);
+                miny = Math.Min(miny, v.Y);
+                maxy = Math.Max(maxy, v.Y);
+            }
+
+            double minoWidth = (r.Width) / (maxx - minx + 1);
+            double minoHeight = (r.Height) / (maxy - miny + 1);
+
+
+            double minoSize = r.Width / Minos.Count;
+
+            // assume wider than tall
+            double realWidth = minoSize * (maxx - minx + 1);
+            double realHeight = minoSize * (maxy - miny + 1);
+
+            double midx = ((double)minx + maxx) / 2;
+            double midy = ((double)miny + maxy) / 2;
+
+            midx *= minoSize;
+            midy *= minoSize;
+
+            double x = r.Left + r.Width / 2 - midx - minoSize / 2;
+            double y = r.Top + r.Height / 2 + midy - minoSize / 2;
+
+            drawPolyomino(canvas, minoSize, x, y, ghost);
+            
         }
     }
 

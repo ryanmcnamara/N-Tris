@@ -36,29 +36,46 @@ namespace N_Tris
 {
     class PolyominoDealer
     {
-        private List<Polyomino> dealingList;
+        private LinkedList<Polyomino> dealingList;
         private List<Polyomino> backingList;
 
         public PolyominoDealer(int n)
         {
             PolyominoGenerator gen = new PolyominoGenerator();
-            dealingList = gen.getPolyominos(n);
-            backingList = new List<Polyomino>();
+            dealingList = new LinkedList<Polyomino>( );
+
+            backingList = gen.getPolyominos( n );
             foreach (Polyomino p in dealingList)
             {
                 backingList.Add(p);
             }
         }
 
-        public Polyomino getNextPolyomino( )
+        public Polyomino getNextPolyomino()
         {
-            if (dealingList.Count == 0)
+            Polyomino p = peekNextPolyominos(1)[0];
+            dealingList.RemoveFirst();
+            return p;
+        }
+
+
+
+        private void addBag( )
+        {
+            List<Polyomino> toShuffle = new List<Polyomino>();
+            foreach( Polyomino p in backingList ) toShuffle.Add( p );
+
+            while ( toShuffle.Count > 0 )
             {
-                foreach (Polyomino p in backingList)
-                {
-                    dealingList.Add(p);
-                }
+                dealingList.AddLast( removeAtRandom( toShuffle  ) );
             }
+
+        }
+
+
+
+        public Polyomino removeAtRandom( List<Polyomino> dealingList )
+        {
             Random r = new Random();
 
             int x = r.Next(dealingList.Count);
@@ -82,5 +99,23 @@ namespace N_Tris
             return temp;
         }
 
+
+        public List<Polyomino> peekNextPolyominos(int n)
+        {
+            List<Polyomino> ret = new List<Polyomino>();
+
+            while (dealingList.Count < n)
+            {
+                addBag();
+            }
+
+            var enumd = dealingList.GetEnumerator();
+            for (int i = 0; i < n; i++)
+            {
+                enumd.MoveNext();
+                ret.Add(enumd.Current);
+            }
+            return ret;
+        }
     }
 }
