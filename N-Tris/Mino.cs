@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace N_Tris
 {
@@ -30,6 +33,33 @@ namespace N_Tris
             }
             Mino o = (Mino)obj;
             return v.Equals(o.v);
+        }
+
+        public void drawMino(Canvas canvas, double minoSize, bool ghost )
+        {
+            double x = v.X * minoSize;
+            double y = canvas.ActualHeight - minoSize;
+            y = y - v.Y * minoSize;
+
+            drawMino(canvas, minoSize, x, y, ghost);
+        }
+
+        public void drawMino(Canvas canvas, double minoSize, double locx, double locy, bool ghost )
+        {
+            SolidColorBrush c = new SolidColorBrush( Color.FromRgb( p.colorR, p.colorG, p.colorB ) );
+            if (ghost)
+            {
+                c.Opacity = c.Opacity / 2;
+            }
+
+            double x = locx;
+            double y = locy;
+
+            Rectangle rect = new Rectangle { Stroke = Brushes.Black, StrokeThickness = 2, Height = minoSize, Width = minoSize, Fill = c };
+
+            Canvas.SetLeft(rect, x);
+            Canvas.SetTop(rect, y);
+            canvas.Children.Add(rect);
         }
 
     }

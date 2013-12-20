@@ -17,9 +17,10 @@ using System.Threading.Tasks;
 
         public override int GetHashCode()
         {
+            const int p = 3571;
             int hash = 17;
-            hash = hash * 23 + X;
-            hash = hash * 23 + Y;
+            hash = hash * p + X;
+            hash = hash * p + Y;
             return hash;
         }
 
@@ -40,6 +41,5 @@ using System.Threading.Tasks;
         {
             return new Vector2(a.X + b.X, b.Y + a.Y);
         }
-
 
     }

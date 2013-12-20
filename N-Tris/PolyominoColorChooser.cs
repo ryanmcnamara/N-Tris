@@ -21,7 +21,10 @@ namespace N_Tris
             {
                 foreach (Polyomino p in polys)
                 {
-                    p.Color = assignColor(p);
+                    SolidColorBrush b = assignColor(p);
+                    p.colorR = b.Color.R;
+                    p.colorG = b.Color.G;
+                    p.colorB = b.Color.B;
                 }
             }
             else
@@ -36,17 +39,21 @@ namespace N_Tris
                     int b;
 
                     HsvToRgb(hue, 1, .7, out r, out g, out b);
-                    Brush c =  new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
-                    polys[i].Color = c;
+
+                    polys[i].colorR = (byte)r;
+                    polys[i].colorG = (byte)g;
+                    polys[i].colorB = (byte)b;
+
+
                 }
 
             }
 
         }
 
-        public static Brush assignColor( Polyomino p_ )
+        public static SolidColorBrush assignColor( Polyomino p_ )
         {
-            Polyomino p = p_.Clone();
+            Polyomino p =  new Polyomino( p_.Minos);
             
             HashBitArray h = p.toBitArray();
 
@@ -88,25 +95,25 @@ namespace N_Tris
                 if (h.Equals(b6)) return Brushes.Orange;
             }
 
-            int hash = h.GetHashCode();
+            //int hash = h.GetHashCode();
 
-            if (hash < 0)
-            {
-                hash = -(hash + 1);
-            }
-            double hue = (hash + 0.0) / int.MaxValue;
-            hue *= 360;
+            //if (hash < 0)
+            //{
+            //    hash = -(hash + 1);
+            //}
+            //double hue = (hash + 0.0) / int.MaxValue;
+            //hue *= 360;
 
-            int red;
-            int green;
-            int blue;
+            //int red;
+            //int green;
+            //int blue;
 
-            HsvToRgb(hue, .5, .5, out red, out green, out blue);
+            //HsvToRgb(hue, .5, .5, out red, out green, out blue);
 
-            Color c = new Color();
-            c.R = (byte)red;
-            c.G = (byte)green;
-            c.B = (byte)blue;
+            //Color c = new Color();
+            //c.R = (byte)red;
+            //c.G = (byte)green;
+            //c.B = (byte)blue;
 
             return Brushes.Black;
         }
