@@ -11,6 +11,7 @@
             <Rectangle  Fill="White" Opacity=".5"  />
             <StackPanel VerticalAlignment="Center" >
                 <Button Name="Pause_ResumeButton" Content="Resume!" Click="Pause_ResumeButton_Click" />
+                <Button Name="Pause_RestartButton" Content="Restart" Click="Pause_RestartButton_Click" />
                 <Button Name="Pause_QuitButton" Content="Quit" />
             </StackPanel>
         </Grid>

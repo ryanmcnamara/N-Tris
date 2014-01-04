@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace N_Tris
 {
@@ -67,6 +68,7 @@ namespace N_Tris
                     if (mediaPlayer != null)
                     {
                         mediaPlayer.Stop();
+                        mediaPlayer = null;
                     }
                 }));
             WindowChangeEvent(sender, new SplashScreen());
@@ -93,7 +95,10 @@ namespace N_Tris
         {
             PauseMenu.Visibility = Visibility.Collapsed;
 
-            mediaPlayer.Play();
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.Play();
+            }
             manager.Pause = false;
             Paused = false;
         }
@@ -101,8 +106,10 @@ namespace N_Tris
         private void onPause()
         {
             manager.Pause = true;
-            PauseMenu.Visibility = Visibility.Visible;
-            mediaPlayer.Pause();
+            PauseMenu.Visibility = Visibility.Visible; if (mediaPlayer != null)
+            {
+                mediaPlayer.Pause();
+            }
             Paused = true;
            
         }
@@ -112,18 +119,31 @@ namespace N_Tris
             onUnpause();
         }
 
+        private void Pause_RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            setUpSimulate();
+        }
 
 
         public void setUpSimulate()
         {
             manager = new GameBoardManager(n, player);
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.Stop();
+            }
+            mediaPlayer = null;
+
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-
+                String basedir = AppDomain.CurrentDomain.BaseDirectory;
                 mediaPlayer = new MediaPlayer();
-                mediaPlayer.Open(new Uri(@"C:\Users\Ryan\Music\music\4 Non Blondes\heyhey.wav"));
-
-                mediaPlayer.Play(); // can also use soundPlayer.PlaySync()
+                mediaPlayer.Open(new Uri(basedir + @"..\..\Media\Music\heyhey.wav"));
+                if (!Paused)
+                {
+                    mediaPlayer.Play(); 
+                }
+                onUnpause();
             }));
 
 

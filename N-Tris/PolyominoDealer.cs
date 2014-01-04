@@ -36,6 +36,8 @@ namespace N_Tris
 {
     class PolyominoDealer
     {
+        Random r = new Random(Guid.NewGuid().GetHashCode());
+
         private LinkedList<Polyomino> dealingList;
         private List<Polyomino> backingList;
 
@@ -45,10 +47,6 @@ namespace N_Tris
             dealingList = new LinkedList<Polyomino>( );
 
             backingList = gen.getPolyominos( n );
-            foreach (Polyomino p in dealingList)
-            {
-                backingList.Add(p);
-            }
         }
 
         public Polyomino getNextPolyomino()
@@ -74,15 +72,13 @@ namespace N_Tris
 
 
 
-        public Polyomino removeAtRandom( List<Polyomino> dealingList )
+        public Polyomino removeAtRandom( List<Polyomino> theList )
         {
-            Random r = new Random();
+            int x = r.Next(theList.Count);
+            Polyomino temp = theList[x];
+            theList[x] = theList[theList.Count - 1];
 
-            int x = r.Next(dealingList.Count);
-            Polyomino temp = dealingList[x];
-            dealingList[x] = dealingList[dealingList.Count - 1];
-
-            dealingList.RemoveAt(dealingList.Count - 1);
+            theList.RemoveAt(theList.Count - 1);
 
 
             temp.SRSNormalize();
