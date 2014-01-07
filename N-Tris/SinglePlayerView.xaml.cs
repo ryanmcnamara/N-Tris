@@ -138,7 +138,7 @@ namespace N_Tris
             {
                 String basedir = AppDomain.CurrentDomain.BaseDirectory;
                 mediaPlayer = new MediaPlayer();
-                mediaPlayer.Open(new Uri(basedir + @"..\..\Media\Music\heyhey.wav"));
+                mediaPlayer.Open(new Uri(basedir + @"..\..\Media\Music\heyhey.mp3"));
                 if (!Paused)
                 {
                     mediaPlayer.Play(); 

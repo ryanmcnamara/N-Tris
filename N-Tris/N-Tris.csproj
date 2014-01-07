@@ -154,6 +154,7 @@
     <Folder Include="PolyominoGen\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Media\Music\heyhey.mp3" />
     <Content Include="Media\Music\heyhey.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
