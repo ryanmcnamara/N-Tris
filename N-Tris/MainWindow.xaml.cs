@@ -82,8 +82,8 @@ namespace N_Tris
             while (running)
             {
                 long frameStart = watch.ElapsedMilliseconds;
-
-                runner.simulateFrame((int)(frameStart - lastFrame));
+                int diff = (int)( 1000 / FrameRate );
+                runner.simulateFrame(diff);
                 lastFrame = watch.ElapsedMilliseconds;
 
                 long elapsed = watch.ElapsedMilliseconds - frameStart;

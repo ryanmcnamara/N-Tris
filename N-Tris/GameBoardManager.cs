@@ -16,7 +16,7 @@ using System.Windows.Threading;
 namespace N_Tris
 {
 
-    class GameBoardManager
+    public class GameBoardManager
     {
 
         private GamePlayer player;
@@ -47,14 +47,15 @@ namespace N_Tris
             }
         }
 
-
+        private BoardChangedEvent BoardChanger { get; set; }
 
 
         public GameBoardData Data { get; set; }
 
 
-        public GameBoardManager(int n, GamePlayer player )
+        public GameBoardManager(int n, GamePlayer player, BoardChangedEvent boardChanger )
         {
+            this.BoardChanger = boardChanger;
             this.player = player;
             
             // rule compliant board size
@@ -84,7 +85,7 @@ namespace N_Tris
 
                 // tell ui to draw
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                    (Action)(() => BoardChangedEvent.fire(this, Data)));
+                    (Action)(() => BoardChanger.fire(this, Data)));
 
                 //drawer.draw(this.Data);
                 FrameNumber++;

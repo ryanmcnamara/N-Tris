@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace N_Tris
 {
-    class Polyomino
+    public class Polyomino
     {
         public byte colorR;
         public byte colorG;
@@ -63,6 +63,8 @@ namespace N_Tris
 
         public Polyomino(Polyomino polyomino) : this(polyomino.Minos)
         {
+            this.evenHeight = polyomino.evenHeight;
+            this.evenWidth = polyomino.evenWidth;
             this.colorR = polyomino.colorR;
             this.colorG = polyomino.colorG;
             this.colorB = polyomino.colorB;

@@ -56,6 +56,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AccessoryDrawer.cs" />
+    <Compile Include="AI\FitnessEvaluator.cs" />
+    <Compile Include="AI\HoleFitness.cs" />
     <Compile Include="BoardChangedEvent.cs" />
     <Compile Include="GameBoardLeftAccessoriesView.xaml.cs">
       <DependentUpon>GameBoardLeftAccessoriesView.xaml</DependentUpon>
@@ -64,13 +66,22 @@
     <Compile Include="GameBoardRightAccessoriesView.xaml.cs">
       <DependentUpon>GameBoardRightAccessoriesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocalPlayerView.cs" />
     <Compile Include="MainGameBoardView.xaml.cs">
       <DependentUpon>MainGameBoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AI\RobotMinimaxPlayer.cs" />
+    <Compile Include="MultiPlayerView.xaml.cs">
+      <DependentUpon>MultiPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NetworkPlayerView.cs" />
     <Compile Include="RunnableUserControl.cs" />
+    <Compile Include="PlayerView.xaml.cs">
+      <DependentUpon>PlayerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SinglePlayerView.xaml.cs">
       <DependentUpon>SinglePlayerView.xaml</DependentUpon>
     </Compile>
@@ -88,6 +99,9 @@
     <Compile Include="Utilities\HashBitArray.cs" />
     <Compile Include="Utilities\MyExtensions.cs" />
     <Compile Include="Utilities\Vector2.cs" />
+    <Compile Include="VersusView.xaml.cs">
+      <DependentUpon>VersusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WallKickStrategy.cs" />
     <Page Include="GameBoardLeftAccessoriesView.xaml">
       <SubType>Designer</SubType>
@@ -109,11 +123,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MultiPlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SinglePlayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VersusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,7 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Media\Music\heyhey.mp3" />
-    <Content Include="Media\Music\heyhey.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace N_Tris.Utilities
 {
-    class HashBitArray
+    public class HashBitArray
     {
         private BitArray x;
 

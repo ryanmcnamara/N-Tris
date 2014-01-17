@@ -27,12 +27,6 @@ namespace N_Tris
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            int n = Convert.ToInt32(polyCountBox.Text);
-            WindowChangeEvent(sender, new SinglePlayerView(n));
-        }
-
         public void addToWindowChangeEvent(EventHandler<UserControl> changeEvent)
         {
             WindowChangeEvent += changeEvent;
@@ -46,6 +40,25 @@ namespace N_Tris
         public void simulateFrame( int millis )
         {
         }
+
+        private void VersusButton_Click(object sender, RoutedEventArgs e)
+        {
+            int n = Convert.ToInt32(polyCountBox.Text);
+            WindowChangeEvent(sender, new VersusView(n));
+        }
+
+        private void SingleButton_Click(object sender, RoutedEventArgs e)
+        {
+            int n = Convert.ToInt32(polyCountBox.Text);
+            WindowChangeEvent(sender, new SinglePlayerView(n));
+        }
+
+        private void Versus_Click(object sender, RoutedEventArgs e)
+        {
+            int n = Convert.ToInt32(polyCountBox.Text);
+            WindowChangeEvent(sender, new VersusView(n));
+        }
+
 
     }
 }

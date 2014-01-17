@@ -34,7 +34,7 @@ using System.Text;
 
 namespace N_Tris
 {
-    class PolyominoDealer
+    public class PolyominoDealer
     {
         Random r = new Random(Guid.NewGuid().GetHashCode());
 
@@ -49,6 +49,12 @@ namespace N_Tris
             backingList = gen.getPolyominos( n );
         }
 
+    public PolyominoDealer(LinkedList<Polyomino> dealingList,List<Polyomino> backingList,Random r)
+    {
+        this.dealingList = new LinkedList<Polyomino>( dealingList );
+        this.backingList = new List<Polyomino>( backingList );
+        this.r = r;
+    }
         public Polyomino getNextPolyomino()
         {
             Polyomino p = peekNextPolyominos(1)[0];
@@ -109,9 +115,15 @@ namespace N_Tris
             for (int i = 0; i < n; i++)
             {
                 enumd.MoveNext();
-                ret.Add(enumd.Current);
+                // clone so don't have access to internal state
+                ret.Add(enumd.Current.Clone());
             }
             return ret;
+        }
+
+        internal PolyominoDealer Clone()
+        {
+            return new PolyominoDealer( dealingList, backingList, r );
         }
     }
 }

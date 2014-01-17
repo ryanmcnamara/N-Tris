@@ -12,7 +12,7 @@ namespace N_Tris
         * @author ryanmcnamara
         *
         */
-    class WallKickStrategy
+    public class WallKickStrategy
     {
 
         private Dictionary<int, List<List<Vector2>>> defaultMinoTables;

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace N_Tris
+namespace N_Tris.AI
 {
-    public abstract class GamePlayer
+    interface FitnessEvaluator
     {
-        public abstract HashSet<int> getMoves(GameBoardManager manager);
+       int evaluate(GameBoardData d);
     }
-
 }

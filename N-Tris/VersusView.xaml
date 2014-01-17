@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="N_Tris.SinglePlayerView"
+﻿<UserControl x:Class="N_Tris.VersusView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,8 +10,8 @@
             <TextBox Text="Versus mode" Grid.Row="1"/>
             <StackPanel Orientation="Horizontal" >
                 <StackPanel Orientation="Vertical" >
-                    <Button Name="Robot" Content="Robot" Click="Robot_Click"  />
-                    <Button Name="Human" Content="Human" Click="Human_Click" />
+                    <Button Name="RobotButton" Content="Robot Opponent" Click="RobotButton_Click" />
+                    <Button Name="HumanButton" Content="Versus" />
                 </StackPanel>
                 <TextBox Name ="polyCountBox" Width="100" Text="4" />
             </StackPanel>

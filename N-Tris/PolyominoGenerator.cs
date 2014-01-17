@@ -11,7 +11,7 @@ using ExtensionMethods;
 
 namespace N_Tris
 {
-    class PolyominoGenerator
+    public class PolyominoGenerator
     {
         private Dictionary<int, HashSet<HashBitArray>> polyominoList;
 

@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace N_Tris
 {
-    class Mino
+    public class Mino
     {
         public Vector2 v;
         public readonly Polyomino p;

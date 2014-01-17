@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N_Tris
 {
-    class GameBoardData
+    public class GameBoardData
     {
         public HashSet<Mino> SettledMinos
         {
@@ -54,7 +54,7 @@ namespace N_Tris
         }
 
         public GameBoardData(HashSet<Mino> SettledMinos, Polyomino FallingPolyomino, Vector2 FallingPolyominoLocation, int n, int Width, 
-                             int Height, WallKickStrategy WallKickStrategy, PolyominoDealer dealer )
+                             int Height, WallKickStrategy WallKickStrategy, PolyominoDealer dealer, bool usedHold = false )
         {
             this.GameOver = false;
             this.SettledMinos = SettledMinos;
@@ -65,6 +65,7 @@ namespace N_Tris
             this.Width = Width;
             this.WallKickStrategy = WallKickStrategy;
             this.MyPieceDealer = dealer;
+            this.UsedHold = usedHold;
 
             FallingRate = 700;
             FallingCooldown = FallingRate;
@@ -116,29 +117,35 @@ namespace N_Tris
             }
         }
 
-        public void tryRotateClockwise()
+        public bool tryRotateClockwise()
         {
+            bool result = true;
             Vector2 tempLocation = FallingPolyominoLocation;
             FallingPolyomino.rotate90C();
             if (!wallKickAfterRotation((FallingPolyomino.rotation + 3) % 4))
             {
                 FallingPolyomino.rotate90CC();
+                result = false;
             }
             else
             {
-                FallingPolyomino.rotate90C();
-                inifinityUpdate(tempLocation);
                 FallingPolyomino.rotate90CC();
+                inifinityUpdate(tempLocation);
+                FallingPolyomino.rotate90C();
             }
+            return result;
         }
 
-        public void tryRotateCounterClockwise()
+
+        public bool tryRotateCounterClockwise()
         {
+            bool result = true;
             Vector2 tempLocation = FallingPolyominoLocation;
             FallingPolyomino.rotate90CC();
             if (!wallKickAfterRotation(4 + ((7 - FallingPolyomino.rotation) % 4)))
             {
                 FallingPolyomino.rotate90C();
+                result = false;
             }
             else
             {
@@ -146,7 +153,7 @@ namespace N_Tris
                 inifinityUpdate( tempLocation );
                 FallingPolyomino.rotate90CC();
             }
-
+            return result;
         }
 
         private void inifinityUpdate( Vector2 locationToTry )
@@ -199,12 +206,15 @@ namespace N_Tris
             {
                 if (replaceIfInvalid)
                 {
-                    foreach (Vector2 v in FallingPolyomino.Minos)
+                    lock (SettledMinos)
                     {
-                        Mino toAdd = new Mino(new Vector2(v.X + FallingPolyominoLocation.X, v.Y + FallingPolyominoLocation.Y), FallingPolyomino);
-                        SettledMinos.Add(toAdd);
+                        foreach (Vector2 v in FallingPolyomino.Minos)
+                        {
+                            Mino toAdd = new Mino(new Vector2(v.X + FallingPolyominoLocation.X, v.Y + FallingPolyominoLocation.Y), FallingPolyomino);
+                            SettledMinos.Add(toAdd);
+                        }
                     }
-                    tryClearLines(0, Width - 1);
+                    tryClearLines();
 
                     getNextPolyomino();
                 }
@@ -216,7 +226,7 @@ namespace N_Tris
         public void tryClearLines()
         {
             // use falling polyomino and its location
-            tryClearLines(0, Width - 1);
+            tryClearLines(0, Height - 1);
         }
 
         public void tryClearLines(int start, int end)
@@ -236,25 +246,28 @@ namespace N_Tris
             if (isLineFull(i))
             {
                 //remove
-                for (int j = 0; j < Width; j++)
+                lock (SettledMinos)
                 {
-                    SettledMinos.Remove(new Mino(new Vector2(j, i), FallingPolyomino));
-                }
-                HashSet<Mino> toDec = new HashSet<Mino>();
-                foreach (Mino m in SettledMinos)
-                {
-                    if (m.v.Y > i)
+                    for (int j = 0; j < Width; j++)
                     {
-                        toDec.Add(m);
+                        SettledMinos.Remove(new Mino(new Vector2(j, i), FallingPolyomino));
                     }
-                }
-                foreach (Mino m in toDec)
-                {
-                    SettledMinos.Remove(m);
-                }
-                foreach (Mino m in toDec)
-                {
-                    SettledMinos.Add(new Mino(new Vector2(m.v.X, m.v.Y - 1), m.p));
+                    HashSet<Mino> toDec = new HashSet<Mino>();
+                    foreach (Mino m in SettledMinos)
+                    {
+                        if (m.v.Y > i)
+                        {
+                            toDec.Add(m);
+                        }
+                    }
+                    foreach (Mino m in toDec)
+                    {
+                        SettledMinos.Remove(m);
+                    }
+                    foreach (Mino m in toDec)
+                    {
+                        SettledMinos.Add(new Mino(new Vector2(m.v.X, m.v.Y - 1), m.p));
+                    }
                 }
                 return true;
             }
@@ -272,6 +285,7 @@ namespace N_Tris
             p.SRSNormalize();
 
             InfinityCount = maxInfinity;
+            tryClearLines();
             return true;
         }
 
@@ -349,7 +363,18 @@ namespace N_Tris
             }
         }
 
+        public GameBoardData clone()
+        {
+            HashSet<Mino> minos = new HashSet<Mino>();
+            foreach ( Mino m in this.SettledMinos )
+            {
+                //todo really slow
+                minos.Add( new Mino( m.v, null ) );
+            }
 
-
+            return new GameBoardData(minos, FallingPolyomino.Clone(), FallingPolyominoLocation, n, Width, Height, WallKickStrategy, MyPieceDealer.Clone(), UsedHold );
+        }
     }
+
+    
 }

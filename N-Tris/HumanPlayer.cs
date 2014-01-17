@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace N_Tris
 {
-    class HumanPlayer : GamePlayer
+    public class HumanPlayer : GamePlayer
     {
         Dictionary<int, Key> movesToKeys = new Dictionary<int, Key>()
         { 

@@ -23,17 +23,15 @@ namespace N_Tris
     public partial class MainGameBoardView : UserControl
     {
         GameBoardDrawer drawer;
-        Thread gameThread;
-        GameBoardManager manager;
 
-        public MainGameBoardView()
+        public MainGameBoardView( BoardChangedEvent boardChanger )
         {
             InitializeComponent();
             this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             drawer = new GameBoardDrawer(BoardCanvas);
 
-            BoardChangedEvent.boardChanged += boardChangeFired;
+            boardChanger.boardChanged += boardChangeFired;
 
         }
 

@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace N_Tris
 {
-    class GameBoardDrawer
+    public class GameBoardDrawer
     {
         private double minoBorderSize;
 
@@ -47,21 +47,23 @@ namespace N_Tris
             data.FallingPolyomino.drawPolyomino(canvas, data.getGhostPieceLocation(), minoDrawSize, true);
 
             //todo remove
-            Ellipse e = new Ellipse { Fill = Brushes.Red, Height = 10, Width = 10 };
-            double x = data.FallingPolyominoLocation.X * minoDrawSize + minoDrawSize / 2 -5;
-            double y = canvas.Height - minoDrawSize / 2 - 5;
-            y -= minoDrawSize * data.FallingPolyominoLocation.Y;
-            Canvas.SetLeft(e, x);
-            Canvas.SetTop(e, y);
-            canvas.Children.Add(e);
+            //Ellipse e = new Ellipse { Fill = Brushes.Red, Height = 10, Width = 10 };
+            //double x = data.FallingPolyominoLocation.X * minoDrawSize + minoDrawSize / 2 -5;
+            //double y = canvas.Height - minoDrawSize / 2 - 5;
+            //y -= minoDrawSize * data.FallingPolyominoLocation.Y;
+            //Canvas.SetLeft(e, x);
+            //Canvas.SetTop(e, y);
+            //canvas.Children.Add(e);
 
-
-            foreach (Mino m in data.SettledMinos)
+            lock (data.SettledMinos)
             {
-                Vector2 v = m.v;
-                m.drawMino(canvas, MinoDrawSize, false);
+                foreach (Mino m in data.SettledMinos)
+                {
+                    Vector2 v = m.v;
+                    m.drawMino(canvas, MinoDrawSize, false);
+                }
+                drawGridLines(canvas);
             }
-            drawGridLines(canvas);
         }
 
         private void drawGridLines(Canvas canvas)

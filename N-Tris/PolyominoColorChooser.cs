@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace N_Tris
 {
-    class PolyominoColorChooser
+    public class PolyominoColorChooser
     {
         public static void assignColors( List<Polyomino> polys )
         {

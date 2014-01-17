@@ -8,7 +8,10 @@
     <StackPanel >
         <TextBox Text="N-Tris" Grid.Row="1"/>
         <StackPanel Orientation="Horizontal" >
-            <Button Content="Single Player" Grid.Row="2" Click="Button_Click"/>
+            <StackPanel Orientation="Vertical" >
+            <Button Name="SingleButton" Content="Single Player" Grid.Row="2" Click="SingleButton_Click"/>
+            <Button Name="Versus" Content="Versus Player" Grid.Row="2" Click="Versus_Click" />
+            </StackPanel>
             <TextBox Name ="polyCountBox" Width="100" Text="4" />
         </StackPanel>
     </StackPanel>

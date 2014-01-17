@@ -21,18 +21,16 @@ namespace N_Tris
     public partial class GameBoardRightAccessoriesView : UserControl
     {
         private AccessoryDrawer accessoryDrawer;
-        public GameBoardRightAccessoriesView()
+        public GameBoardRightAccessoriesView( BoardChangedEvent boardChanger)
         {
             InitializeComponent();
             accessoryDrawer = new AccessoryDrawer();
 
-            BoardChangedEvent.boardChanged += BoardChangedEvent_boardChanged;
+            boardChanger.boardChanged += BoardChangedEvent_boardChanged;
         }
 
         private void BoardChangedEvent_boardChanged(object sender, GameBoardData e)
         {
-
-
             accessoryDrawer.drawRight(AccessoryCanvas, e );
         }
     }
