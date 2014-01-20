@@ -40,7 +40,6 @@ namespace N_Tris
         {
             testdata++;
             server.postGame(e); // todo
-            
         }
 
         public override void setUpSimulate()
