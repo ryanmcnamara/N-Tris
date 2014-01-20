@@ -34,7 +34,7 @@ namespace N_Tris
         private void Robot_Click(object sender, RoutedEventArgs e)
         {
             int n = Convert.ToInt32(polyCountBox.Text);
-            WindowChangeEvent(this, new MultiPlayerView(n, new LocalPlayerView( n, new RobotMinimaxPlayer() ), new List<PlayerView>()));
+            WindowChangeEvent(this, new MultiPlayerView(n, new LocalPlayerView( n, new RobotMinimaxPlayer(), null ), new List<PlayerView>()));
         }
 
         public void setUpSimulate()
@@ -53,7 +53,7 @@ namespace N_Tris
         private void Human_Click(object sender, RoutedEventArgs e)
         {
             int n = Convert.ToInt32(polyCountBox.Text);
-            WindowChangeEvent(this, new MultiPlayerView(n, new LocalPlayerView( n, new HumanPlayer() ), new List<PlayerView>()));
+            WindowChangeEvent(this, new MultiPlayerView(n, new LocalPlayerView( n, new HumanPlayer(), null ), new List<PlayerView>()));
         }
     }
 }

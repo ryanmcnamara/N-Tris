@@ -28,27 +28,20 @@ namespace N_Tris
     {
         public EventHandler<UserControl> WindowChangeEvent;
 
-        protected int n;
         protected BoardChangedEvent boardChanger;
 
         public bool Paused { get; set; }
 
-        public PlayerView() : this(4)
-        {           
-
-        }
-
-        public PlayerView(int n )
+        public PlayerView( int height = 800 )
         {
             Paused = false;
-            this.n = n; 
             InitializeComponent();
 
             boardChanger = new BoardChangedEvent();
 
-            myPanel.Children.Add(new GameBoardLeftAccessoriesView(boardChanger));
-            myPanel.Children.Add(new MainGameBoardView(boardChanger));
-            myPanel.Children.Add(new GameBoardRightAccessoriesView(boardChanger));
+            myPanel.Children.Add(new GameBoardLeftAccessoriesView(boardChanger, height));
+            myPanel.Children.Add(new MainGameBoardView(boardChanger, height));
+            myPanel.Children.Add(new GameBoardRightAccessoriesView(boardChanger, height));
 
         }
 
@@ -66,7 +59,6 @@ namespace N_Tris
 
         public virtual void addToWindowChangeEvent(EventHandler<UserControl> changeEvent)
         {
-            int x=0; x++; return;
             throw new NotImplementedException();
         }
 

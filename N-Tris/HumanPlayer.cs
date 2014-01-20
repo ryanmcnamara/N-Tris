@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using N_TrisNetworkInterface;
 
 namespace N_Tris
 {
@@ -39,7 +40,9 @@ namespace N_Tris
         {
             this.moves = new ConcurrentBag<int>();
 
-            Application.Current.MainWindow.KeyDown += new System.Windows.Input.KeyEventHandler(getKeyDown); 
+            Application.Current.MainWindow.KeyDown += new System.Windows.Input.KeyEventHandler(getKeyDown);
+            int x = 0;
+            x++;
         }
 
 
@@ -52,7 +55,7 @@ namespace N_Tris
             }
         }
 
-        public override HashSet<int> getMoves(GameBoardManager manager)
+        public override HashSet<int> getMoves(GameBoardManipulator manager)
         {
             HashSet<int> ret = new HashSet<int>(moves);
             moves = new ConcurrentBag<int>();

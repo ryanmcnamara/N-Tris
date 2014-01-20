@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace N_Tris
             get { return minoDrawSize; }
             set
             {
-                minoBorderSize = value / 10;
+                minoBorderSize = value / 10.0;
                 minoDrawSize = value;
             }
         }
@@ -32,20 +33,25 @@ namespace N_Tris
 
         public void draw(GameBoardData data)
         {
-            
             canvas.Children.Clear();
-            MinoDrawSize = canvas.Width / data.Width;
+            MinoDrawSize = ((double)(canvas.Width)) / data.Width;
 
 
-            Rectangle rect = new Rectangle { Stroke = Brushes.Black, StrokeThickness = 2, Height = canvas.Height, Width = canvas.ActualWidth, Fill = Brushes.Black };
+            Rectangle rect = new Rectangle { Stroke = Brushes.Black, StrokeThickness = 2, Height = canvas.Height, Width = canvas.Width, Fill = Brushes.Black };
 
             Canvas.SetLeft(rect, 0);
             Canvas.SetTop(rect, 0);
             canvas.Children.Add(rect);
 
-            data.FallingPolyomino.drawPolyomino(canvas, data.FallingPolyominoLocation, MinoDrawSize, false);
-            data.FallingPolyomino.drawPolyomino(canvas, data.getGhostPieceLocation(), minoDrawSize, true);
+            Mino.drawPolyomino(data.FallingPolyomino, canvas, data.FallingPolyominoLocation, MinoDrawSize, false);
+            Mino.drawPolyomino(data.FallingPolyomino, canvas, data.GhostPieceLocation, MinoDrawSize, true);
 
+
+            //Rectangle rr = new Rectangle { Stroke = Brushes.Pink, StrokeThickness = 2, Height = MinoDrawSize, Width = MinoDrawSize, Fill = Brushes.Pink };
+
+            //Canvas.SetLeft(rr, 0);
+            //Canvas.SetTop(rr, 800-40);
+            //canvas.Children.Add(rr);
             //todo remove
             //Ellipse e = new Ellipse { Fill = Brushes.Red, Height = 10, Width = 10 };
             //double x = data.FallingPolyominoLocation.X * minoDrawSize + minoDrawSize / 2 -5;
@@ -55,12 +61,11 @@ namespace N_Tris
             //Canvas.SetTop(e, y);
             //canvas.Children.Add(e);
 
-            lock (data.SettledMinos)
+            lock (data.SettledMinoLocations)
             {
-                foreach (Mino m in data.SettledMinos)
+                foreach (Vector2 m in data.SettledMinoLocations)
                 {
-                    Vector2 v = m.v;
-                    m.drawMino(canvas, MinoDrawSize, false);
+                    Mino.drawMino(canvas, MinoDrawSize, false, m, data.SettledMinoColors[m] );
                 }
                 drawGridLines(canvas);
             }
@@ -68,7 +73,7 @@ namespace N_Tris
 
         private void drawGridLines(Canvas canvas)
         {
-            for (double i = 0; i <= canvas.ActualWidth; i += minoDrawSize)
+            for (double i = 0; i <= canvas.Width; i += minoDrawSize)
             {
                 // vertical lines
                 Line l = new Line { Stroke = Brushes.White, StrokeThickness = 1, X1 = i, Y1 = canvas.Height, X2 = i, Y2 = 0 };
@@ -77,7 +82,7 @@ namespace N_Tris
             for (double j = 0; j <= canvas.Height; j += minoDrawSize)
             {
                 // vertical lines
-                Line l = new Line { Stroke = Brushes.White, StrokeThickness = 1, X1 = 0, Y1 = canvas.Height - j, X2 = canvas.ActualWidth, Y2 = canvas.Height - j };
+                Line l = new Line { Stroke = Brushes.White, StrokeThickness = 1, X1 = 0, Y1 = canvas.Height - j, X2 = canvas.Width, Y2 = canvas.Height - j };
                 canvas.Children.Add(l);
             }
         }

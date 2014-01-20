@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +22,15 @@ namespace N_Tris
     public partial class GameBoardRightAccessoriesView : UserControl
     {
         private AccessoryDrawer accessoryDrawer;
-        public GameBoardRightAccessoriesView( BoardChangedEvent boardChanger)
+        public GameBoardRightAccessoriesView( BoardChangedEvent boardChanger, int height = 800 )
         {
             InitializeComponent();
             accessoryDrawer = new AccessoryDrawer();
+            AccessoryCanvas.Height = height;
+            AccessoryCanvas.Width = (int)( height * 150.0 / 800 );
+
+            AccessoryCanvas.ClipToBounds = true;
+            AccessoryCanvas.SnapsToDevicePixels = true;
 
             boardChanger.boardChanged += BoardChangedEvent_boardChanged;
         }

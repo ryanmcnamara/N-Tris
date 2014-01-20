@@ -37,6 +37,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,7 +64,7 @@
     <Compile Include="GameBoardLeftAccessoriesView.xaml.cs">
       <DependentUpon>GameBoardLeftAccessoriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameBoardData.cs" />
+    <Compile Include="GameBoardManipulator.cs" />
     <Compile Include="GameBoardRightAccessoriesView.xaml.cs">
       <DependentUpon>GameBoardRightAccessoriesView.xaml</DependentUpon>
     </Compile>
@@ -77,6 +79,7 @@
     <Compile Include="MultiPlayerView.xaml.cs">
       <DependentUpon>MultiPlayerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Networking\NTrisClientImpl.cs" />
     <Compile Include="NetworkPlayerView.cs" />
     <Compile Include="RunnableUserControl.cs" />
     <Compile Include="PlayerView.xaml.cs">
@@ -88,7 +91,6 @@
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\Constants.cs" />
     <Compile Include="GameBoardDrawer.cs" />
     <Compile Include="GameBoardManager.cs" />
     <Compile Include="GamePlayer.cs" />
@@ -96,9 +98,10 @@
     <Compile Include="Mino.cs" />
     <Compile Include="PolyominoColorChooser.cs" />
     <Compile Include="PolyominoDealer.cs" />
-    <Compile Include="Utilities\HashBitArray.cs" />
     <Compile Include="Utilities\MyExtensions.cs" />
-    <Compile Include="Utilities\Vector2.cs" />
+    <Compile Include="VersusMatchMakingView.xaml.cs">
+      <DependentUpon>VersusMatchMakingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VersusView.xaml.cs">
       <DependentUpon>VersusView.xaml</DependentUpon>
     </Compile>
@@ -139,13 +142,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="VersusMatchMakingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VersusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Polyomino.cs" />
     <Compile Include="PolyominoDrawer.cs" />
     <Compile Include="PolyominoGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -175,12 +181,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Drawing\" />
-    <Folder Include="GameLogic\" />
     <Folder Include="PolyominoGen\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Media\Music\heyhey.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\N-TrisNetworkInterface\N-TrisNetworkInterface.csproj">
+      <Project>{658e1658-113f-43cd-975e-8d0cad360fb6}</Project>
+      <Name>N-TrisNetworkInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

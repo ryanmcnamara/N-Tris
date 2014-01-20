@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace N_Tris.AI
             {
                 for (int x = 0; x < d.Width; x++)
                 {
-                    if ( d.SettledMinos.Contains(new Mino(new Vector2(x, h), null)))
+                    if ( d.SettledMinoLocations.Contains(new Vector2(x, h)))
                     {
                         maxHeight = Math.Max(maxHeight, h);
                         if (!pieceSeen[x])

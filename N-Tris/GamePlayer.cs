@@ -8,7 +8,7 @@ namespace N_Tris
 {
     public abstract class GamePlayer
     {
-        public abstract HashSet<int> getMoves(GameBoardManager manager);
+        public abstract HashSet<int> getMoves(GameBoardManipulator manager);
     }
 
 }

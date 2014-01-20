@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
@@ -24,12 +25,17 @@ namespace N_Tris
     {
         GameBoardDrawer drawer;
 
-        public MainGameBoardView( BoardChangedEvent boardChanger )
+        public MainGameBoardView( BoardChangedEvent boardChanger, int height = 800 )
         {
             InitializeComponent();
             this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             drawer = new GameBoardDrawer(BoardCanvas);
+
+            BoardCanvas.Height = height;
+            BoardCanvas.Width = (int)(height * 1 / 2.0);
+            BoardCanvas.SnapsToDevicePixels = true;
+            BoardCanvas.ClipToBounds = true;
 
             boardChanger.boardChanged += boardChangeFired;
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,18 +23,21 @@ namespace N_Tris
     {
         private AccessoryDrawer accessoryDrawer;
 
-        public GameBoardLeftAccessoriesView(BoardChangedEvent boardChanger)
+        public GameBoardLeftAccessoriesView(BoardChangedEvent boardChanger, int height )
         {
             InitializeComponent();
+
             accessoryDrawer = new AccessoryDrawer();
+            AccessoryCanvas.Height = height;
+            AccessoryCanvas.Width = (int)(height * (150.0 / 800.0));
+            AccessoryCanvas.SnapsToDevicePixels = true;
+            AccessoryCanvas.ClipToBounds = true;
 
             boardChanger.boardChanged += BoardChangedEvent_boardChanged;
         }
 
         private void BoardChangedEvent_boardChanged(object sender, GameBoardData e)
         {
-
-
             accessoryDrawer.draw(AccessoryCanvas, e );
         }
     }

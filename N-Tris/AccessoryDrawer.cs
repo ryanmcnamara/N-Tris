@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace N_Tris
                 Polyomino p = e.HeldPolyomino.Clone();
                 p.SRSNormalize();
                 Rect r = new Rect((accessoryCanvas.ActualWidth - holdCellWidth) / 2, 0, holdCellWidth, holdCellWidth);
-                p.drawPolyomino(accessoryCanvas, r, false);
+                Mino.drawPolyomino(p, accessoryCanvas, r, false);
             }
 
             //List<Polyomino> nexts = e.MyPieceDealer.peekNextPolyominos(5);
@@ -60,8 +61,7 @@ namespace N_Tris
 
             double holdCellWidth = 2 * accessoryCanvas.ActualWidth / 3;
 
-
-            List<Polyomino> nexts = e.MyPieceDealer.peekNextPolyominos(5);
+            var nextPoly = e.PolyominoQueue.First;
 
             double startNextsY = 0;
 
@@ -76,10 +76,11 @@ namespace N_Tris
                 Canvas.SetTop(fill, y);
                 accessoryCanvas.Children.Add(fill);
 
-                Polyomino p = nexts[i].Clone();
+                Polyomino p = nextPoly.Value.Clone();
+                nextPoly = nextPoly.Next;
                 p.SRSNormalize();
                 Rect r = new Rect(x, y, holdCellWidth, holdCellWidth);
-                p.drawPolyomino(accessoryCanvas, r, false);
+                Mino.drawPolyomino(p, accessoryCanvas, r, false);
             }
         }
     }

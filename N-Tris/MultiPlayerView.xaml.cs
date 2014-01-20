@@ -28,18 +28,37 @@ namespace N_Tris
 
         MediaPlayer mediaPlayer;
 
-        public MultiPlayerView(int n, PlayerView thisPlayer, List<PlayerView> opponents)
+        public MultiPlayerView(int n, PlayerView thisPlayer, List<PlayerView> opponents, int cols = 1, int cellHeight = 800)
         {
             InitializeComponent();
             this.opponents = opponents;
-            this.players = new List<PlayerView>( opponents );
+            this.players = new List<PlayerView>(opponents);
             players.Add(thisPlayer);
             this.player = thisPlayer;
             MyPanel.Children.Add(player);
-            foreach (PlayerView p in opponents)
+
+            // add stack panel containing opponents 
+            StackPanel vStack = new StackPanel();
+            vStack.Orientation = Orientation.Vertical;
+            int k = 0;
+            while (k < opponents.Count)
             {
-                MyPanel.Children.Add(p);
+                StackPanel hStack = new StackPanel();
+                hStack.Orientation = Orientation.Horizontal;
+                for (int i = 0; k < opponents.Count && i < cols; i++)
+                {
+                    hStack.Children.Add(opponents[k]);
+                    k++;
+                }
+                vStack.Children.Add(hStack);
             }
+            MyPanel.Children.Add(vStack);
+
+
+            //foreach (PlayerView p in opponents)
+            //{
+            //    MyPanel.Children.Add(p);
+            //}
 
             Application.Current.MainWindow.KeyDown += MainWindow_KeyDown;
             Pause_QuitButton.Click += Pause_QuitButton_Click;
@@ -60,8 +79,9 @@ namespace N_Tris
                 mediaPlayer.Open(new Uri(basedir + @"..\..\Media\Music\heyhey.mp3"));
                 if (!player.Paused)
                 {
-                    mediaPlayer.Play();
+                    //mediaPlayer.Play(); todo
                 }
+                mediaPlayer = null; // todo
                 onUnpause();
             }));
 

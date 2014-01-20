@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N_TrisNetworkInterface;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -22,17 +23,9 @@ namespace N_Tris
         private GamePlayer player;
 
 
-        public int FrameRate
-        {
-            get;
-            set;
-        }
+        public int FrameRate { get; set; }
 
-        private int FrameNumber
-        {
-            get;
-            set;
-        }
+        private int FrameNumber { get; set; }
 
         private bool pause;
         public bool Pause
@@ -50,36 +43,32 @@ namespace N_Tris
         private BoardChangedEvent BoardChanger { get; set; }
 
 
-        public GameBoardData Data { get; set; }
+        public GameBoardManipulator Manipulator { get; set; }
 
+        public GameBoardData Data { get; set; }
 
         public GameBoardManager(int n, GamePlayer player, BoardChangedEvent boardChanger )
         {
             this.BoardChanger = boardChanger;
             this.player = player;
             
-            // rule compliant board size
-            int width = n * 2 + n / 2;
-            int height = width * 2 + n / 2;
 
             WallKickStrategy wallKickStrategy = new WallKickStrategy();
             wallKickStrategy.getStrategyCopy(20, 0, false); // precompute
 
             PolyominoDealer pieceDealer = new PolyominoDealer( n );
 
-            this.Data = new GameBoardData(new HashSet<Mino>(), null, new Vector2(0,0), n, width, height, wallKickStrategy, pieceDealer);
+            this.Manipulator = new GameBoardManipulator( n );
             FrameNumber = 0;
             FrameRate = 32;
-
-
-
         }
 
         public void GameLoop(int millis)
         {
+            this.Data = Manipulator.Data;
             if (!Data.GameOver && !Pause)
             {
-                Data.passTime(millis);
+                Manipulator.passTime(millis);
 
                 processInput();
 
@@ -100,15 +89,15 @@ namespace N_Tris
         
         public void processInput()
         {
-            HashSet<int> moves = player.getMoves(this);
+            HashSet<int> moves = player.getMoves(this.Manipulator);
 
             foreach (int k in moves)
             {
-                int x = Data.ProcessMove(k);
+                int x = Manipulator.ProcessMove(k);
 
                 if (k == (int)Constants.Moves.SOFT_DROP && x == 1)
                 {
-                    Data.FallingCooldown = Data.FallingRate;
+                    Data.FallingCooldown = GameBoardData.FallingRate;
                 }
             }
         }

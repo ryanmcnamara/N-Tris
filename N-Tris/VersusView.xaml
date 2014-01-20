@@ -11,7 +11,7 @@
             <StackPanel Orientation="Horizontal" >
                 <StackPanel Orientation="Vertical" >
                     <Button Name="RobotButton" Content="Robot Opponent" Click="RobotButton_Click" />
-                    <Button Name="HumanButton" Content="Versus" />
+                    <Button Name="HumanButton" Content="Versus" Click="HumanButton_Click" />
                 </StackPanel>
                 <TextBox Name ="polyCountBox" Width="100" Text="4" />
             </StackPanel>

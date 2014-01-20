@@ -1,11 +1,11 @@
-﻿using N_Tris.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-
+using ExtensionMethods;
+using N_TrisNetworkInterface;
 namespace N_Tris
 {
     public class PolyominoColorChooser
@@ -22,9 +22,7 @@ namespace N_Tris
                 foreach (Polyomino p in polys)
                 {
                     SolidColorBrush b = assignColor(p);
-                    p.colorR = b.Color.R;
-                    p.colorG = b.Color.G;
-                    p.colorB = b.Color.B;
+                    p.color = b.Color.ToArgb();
                 }
             }
             else
@@ -39,12 +37,9 @@ namespace N_Tris
                     int b;
 
                     HsvToRgb(hue, 1, .7, out r, out g, out b);
+                    Color c = Color.FromArgb(255, (byte)r, (byte)g, (byte)b);
 
-                    polys[i].colorR = (byte)r;
-                    polys[i].colorG = (byte)g;
-                    polys[i].colorB = (byte)b;
-
-
+                    polys[i].color = c.ToArgb();
                 }
 
             }

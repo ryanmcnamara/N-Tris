@@ -1,5 +1,5 @@
 ﻿using N_Tris.AI;
-using N_Tris.Utilities;
+using N_TrisNetworkInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +44,7 @@ namespace N_Tris
 
 
 
-        public override HashSet<int> getMoves(GameBoardManager manager)
+        public override HashSet<int> getMoves(GameBoardManipulator manager)
         {
             HashSet<int> ret = new HashSet<int>();
 
@@ -53,17 +53,17 @@ namespace N_Tris
 
                 int ansScore = int.MinValue;
 
-                Stack<KeyValuePair<GameBoardData, Node>> S = new Stack<KeyValuePair<GameBoardData, Node>>();
+                Stack<KeyValuePair<GameBoardManipulator, Node>> S = new Stack<KeyValuePair<GameBoardManipulator, Node>>();
 
-                S.Push(new KeyValuePair<GameBoardData, Node>(manager.Data.clone(), new Node(-1, -1, 0, false)));
+                S.Push(new KeyValuePair<GameBoardManipulator, Node>(manager.Clone(), new Node(-1, -1, 0, false)));
 
                 while (S.Count > 0)
                 {
-                    KeyValuePair<GameBoardData, Node> kv = S.Pop();
-                    GameBoardData data = kv.Key;
+                    KeyValuePair<GameBoardManipulator, Node> kv = S.Pop();
+                    GameBoardManipulator data = kv.Key;
                     Node node = kv.Value;
 
-                    int score = fitness.evaluate(data);
+                    int score = fitness.evaluate(data.Data);
                     if (node.inititalRotation != -1 && score > ansScore)
                     {
                         ansScore = score;
@@ -75,9 +75,9 @@ namespace N_Tris
                         continue;
                     }
 
-                    if (!data.UsedHold)
+                    if (!data.Data.UsedHold)
                     {
-                        GameBoardData dataCopy = data.clone();
+                        GameBoardManipulator dataCopy = data.Clone();
 
                         dataCopy.holdPolyomino();
                         Node nextNode;
@@ -89,15 +89,15 @@ namespace N_Tris
                         {
                             nextNode = new Node(node.initialPosition, node.inititalRotation, node.depth + 1, node.initialHold);
                         }
-                        S.Push(new KeyValuePair<GameBoardData, Node>(dataCopy, nextNode));
+                        S.Push(new KeyValuePair<GameBoardManipulator, Node>(dataCopy, nextNode));
                     }
 
 
                     for (int rot = 0; rot < 4; rot++)
                     {
-                        for (int place = 0; place < data.Width; place++)
+                        for (int place = 0; place < data.Data.Width; place++)
                         {
-                            GameBoardData dataCopy = data.clone();
+                            GameBoardManipulator dataCopy = data.Clone();
 
                             bool validMove = true;
                             for (int i = 0; validMove && i < rot; i++)
@@ -107,7 +107,7 @@ namespace N_Tris
 
                             if (validMove)
                             {
-                                validMove = validMove && dataCopy.tryFallingPosition(new Vector2(place, dataCopy.FallingPolyominoLocation.Y));
+                                validMove = validMove && dataCopy.tryFallingPosition(new Vector2(place, dataCopy.Data.FallingPolyominoLocation.Y));
                                 if (validMove)
                                 {
                                     // valid!
@@ -117,14 +117,14 @@ namespace N_Tris
                                     if (node.initialPosition == -1)
                                     {
                                         nextInitPos = place;
-                                        nextInitRot = (rot + data.FallingPolyomino.rotation) % 4;
+                                        nextInitRot = (rot + data.Data.FallingPolyomino.rotation) % 4;
                                     }
                                     Node nextNode = new Node(nextInitPos, nextInitRot, nextDepth, node.initialHold);
 
                                     // hard drop
-                                    while (dataCopy.fallingPolyominoDescend(true)) ;
+                                    while (dataCopy.FallingPolyominoDescend(true)) ;
 
-                                    S.Push(new KeyValuePair<GameBoardData, Node>(dataCopy, nextNode));
+                                    S.Push(new KeyValuePair<GameBoardManipulator, Node>(dataCopy, nextNode));
 
                                 }
                             }

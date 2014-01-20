@@ -36,8 +36,8 @@ namespace N_Tris
         {
             int n = Convert.ToInt32( polyCountBox.Text );
             List<PlayerView> opponents = new List<PlayerView>();
-            opponents.Add( new LocalPlayerView( n, new RobotMinimaxPlayer() ) );
-            WindowChangeEvent(this, new MultiPlayerView(n, new LocalPlayerView(n, new HumanPlayer()), opponents)); 
+            opponents.Add( new LocalPlayerView( n, new RobotMinimaxPlayer(), null ) );
+            WindowChangeEvent(this, new MultiPlayerView(n, new LocalPlayerView(n, new HumanPlayer(), null), opponents)); 
         }
 
         public void setUpSimulate()
@@ -51,6 +51,11 @@ namespace N_Tris
         public void addToWindowChangeEvent(EventHandler<UserControl> changeEvent)
         {
             WindowChangeEvent += changeEvent;
+        }
+
+        private void HumanButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowChangeEvent(this, new VersusMatchMakingView());
         }
     }
 }
